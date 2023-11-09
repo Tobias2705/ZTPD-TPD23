@@ -1,4 +1,4 @@
--- Æwiczenie 1A
+-- Ä†wiczenie 1A
 INSERT INTO USER_SDO_GEOM_METADATA VALUES (
     'FIGURY',
     'KSZTALT',
@@ -9,17 +9,17 @@ INSERT INTO USER_SDO_GEOM_METADATA VALUES (
     NULL
 );
 
--- Æwiczenie 1B
+-- Ä†wiczenie 1B
 SELECT SDO_TUNE.ESTIMATE_RTREE_INDEX_SIZE(3000000, 8192, 10, 2, 0)
 FROM FIGURY
 WHERE ROWNUM <= 1;
 
--- Æwiczenie 1C
+-- Ä†wiczenie 1C
 CREATE INDEX figures_idx
 ON FIGURY(KSZTALT)
 INDEXTYPE IS MDSYS.SPATIAL_INDEX_V2;
 
--- Æwiczenie 1D
+-- Ä†wiczenie 1D
 SELECT ID
 FROM FIGURY
 WHERE
@@ -33,9 +33,9 @@ WHERE
             NULL
         )
     ) = 'TRUE';
--- Odp: Nie odpowiada rzeczywistoœci, poniewa¿ tylko 2 figura zawiera ten punkt.
+-- Odp: Nie odpowiada rzeczywistoÅ›ci, poniewaÅ¼ tylko 2 figura zawiera ten punkt.
 
--- Æwiczenie 1E
+-- Ä†wiczenie 1E
 SELECT ID
 FROM FIGURY
 WHERE
@@ -50,9 +50,9 @@ WHERE
         ),
         'mask=ANYINTERACT'
     ) = 'TRUE';
--- Odp: Teraz wynik jest zgodny z rzeczywistoœci¹.
+-- Odp: Teraz wynik jest zgodny z rzeczywistoÅ›ciÄ….
 
--- Æwiczenie 2A
+-- Ä†wiczenie 2A
 SELECT M1.CITY_NAME AS MIASTO, SDO_NN_DISTANCE(1) AS ODL
 FROM MAJOR_CITIES M1, MAJOR_CITIES M2
 WHERE SDO_NN(
@@ -65,7 +65,7 @@ WHERE SDO_NN(
     AND M2.CITY_NAME = 'Warsaw'
 ORDER BY ODL;
 
--- Æwiczenie 2B
+-- Ä†wiczenie 2B
 SELECT M1.CITY_NAME AS MIASTO
 FROM MAJOR_CITIES M1, MAJOR_CITIES M2
 WHERE SDO_WITHIN_DISTANCE(
@@ -76,14 +76,14 @@ WHERE SDO_WITHIN_DISTANCE(
     AND M1.CITY_NAME <> 'Warsaw'
     AND M2.CITY_NAME = 'Warsaw';
     
--- Æwiczenie 2C
+-- Ä†wiczenie 2C
 SELECT C.CNTRY_NAME AS KRAJ, M.CITY_NAME AS MIASTO
 FROM COUNTRY_BOUNDARIES C, MAJOR_CITIES M
 WHERE
     SDO_RELATE(M.GEOM, C.GEOM, 'mask=INSIDE') = 'TRUE'
     AND C.CNTRY_NAME = 'Slovakia';
     
--- Æwiczenie 2D
+-- Ä†wiczenie 2D
 SELECT C1.CNTRY_NAME AS PANSTWO, SDO_GEOM.SDO_DISTANCE(C1.GEOM, C2.GEOM, 1, 'unit=km') AS ODL
 FROM COUNTRY_BOUNDARIES C1, COUNTRY_BOUNDARIES C2
 WHERE
@@ -94,20 +94,20 @@ WHERE
     ) != 'TRUE'
     AND C2.CNTRY_NAME = 'Poland';
     
--- Æwiczenie 3A
+-- Ä†wiczenie 3A
 SELECT C1.CNTRY_NAME AS PANSTWO, SDO_GEOM.SDO_LENGTH(SDO_GEOM.SDO_INTERSECTION(C1.GEOM, C2.GEOM, 1), 1, 'unit=km') AS ODLEGLOSC
 FROM COUNTRY_BOUNDARIES C1, COUNTRY_BOUNDARIES C2
 WHERE SDO_FILTER(C1.GEOM, C2.GEOM) = 'TRUE' 
 AND C2.CNTRY_NAME = 'Poland';
 
--- Æwiczenie 3B
+-- Ä†wiczenie 3B
 SELECT CNTRY_NAME AS PANSTWO
 FROM COUNTRY_BOUNDARIES
 WHERE SDO_GEOM.SDO_AREA(GEOM) = (
     SELECT MAX(SDO_GEOM.SDO_AREA(GEOM))
     FROM COUNTRY_BOUNDARIES);
     
--- Æwiczenie 3C
+-- Ä†wiczenie 3C
 SELECT
     SDO_GEOM.SDO_AREA(
         SDO_GEOM.SDO_MBR(
@@ -122,7 +122,7 @@ FROM MAJOR_CITIES M1, MAJOR_CITIES M2
 WHERE M1.CITY_NAME = 'Lodz' 
 AND M2.CITY_NAME = 'Warsaw';
 
--- Æwiczenie 3D
+-- Ä†wiczenie 3D
 SELECT
     SDO_GEOM.SDO_UNION(C.GEOM, M.GEOM, 0.01).GET_DIMS() ||
     SDO_GEOM.SDO_UNION(C.GEOM, M.GEOM, 0.01).GET_LRS_DIM() ||
@@ -131,7 +131,7 @@ FROM COUNTRY_BOUNDARIES C, MAJOR_CITIES M
 WHERE C.CNTRY_NAME = 'Poland'
 AND M.CITY_NAME = 'Prague';
 
--- Æwiczenie 3E
+-- Ä†wiczenie 3E
 SELECT M.CITY_NAME, C.CNTRY_NAME
 FROM COUNTRY_BOUNDARIES C, MAJOR_CITIES M
 WHERE
@@ -144,7 +144,7 @@ WHERE
             WHERE C.CNTRY_NAME = M.CNTRY_NAME
         );
 
--- Æwiczenie 3F
+-- Ä†wiczenie 3F
 SELECT NAME, SUM(DLUGOSC) AS DLUGOSC
 FROM (
     SELECT
