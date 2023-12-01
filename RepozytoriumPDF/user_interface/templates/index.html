@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repozytorium PDF</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 80%;
+        }
+
+        tbody td {
+            text-align: center;
+            padding: 10px;
+        }
+
+        header {
+            background-color: #343a40;
+            color: #ffffff;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        header a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        form {
+            margin: 20px;
+            text-align: center;
+        }
+
+        label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        input[type="text"] {
+            padding: 5px;
+            width: 200px;
+        }
+
+        button {
+            padding: 5px 10px;
+            background-color: #1976D2;
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #1565C0;
+        }
+
+        h2 {
+            color: #1976D2;
+            text-align: center;
+        }
+
+        ul {
+            list-style-type: none;
+        }
+
+        a {
+            color: #1976D2;
+            text-decoration: none;
+        }
+
+        .search-container {
+            flex: 1;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/">
+            <h1>Repozytorium PDF</h1>
+        </a>
+    </header>
+
+    <div class="container">
+        <div class="search-container">
+            <form action="/search" method="post">
+                <label for="search_query">Wyszukiwarka:</label>
+                <input type="text" id="search_query" name="search_query" autocomplete="off" required>
+                <button type="submit">Szukaj</button>
+            </form>
+
+            {% if search_results %}
+                <h2>Wyniki wyszukiwania dla "{{ query }}"</h2>
+
+                <table>
+                    <tbody>
+                        {% for result in search_results %}
+                            <tr>
+                                <td>{{ result[0] }} <a href="{{ url_for('view_pdf', file_name=result[0]) }}" class="lookup">📄</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
