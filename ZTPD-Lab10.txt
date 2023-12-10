@@ -1,0 +1,351 @@
+-- Zad.3
+<?xml-stylesheet type="text/xsl" href="zesp_prac.xsl"?>
+
+-- Zad.4
+Tak, wykorzystane zostały domyślne szablony.
+
+-- Zad.5
+<xsl:template match="/">
+    <html>
+        <head>
+            <title>Zespoły</title>
+        </head>
+        <body>
+            <h1>ZESPOŁY:</h1>
+        </body>
+    </html>
+</xsl:template>
+
+-- Zad.6
+a)
+<xsl:template match="/">
+    <html>
+        <head>
+            <title>Zespoły</title>
+        </head>
+        <body>
+            <h1>ZESPOŁY:</h1>
+            <ol>
+                <xsl:for-each select="ZESPOLY/ROW">
+                    <li>
+                        <xsl:value-of select="NAZWA"/>
+                    </li>
+                </xsl:for-each>
+            </ol>
+        </body>
+    </html>
+</xsl:template>
+
+b)
+<xsl:template match="/">
+    <html>
+        <head>
+            <title>Zespoły</title>
+        </head>
+        <body>
+            <h1>ZESPOŁY:</h1>
+            <ol><xsl:apply-templates select="ZESPOLY/ROW"/></ol>
+        </body>
+    </html>
+</xsl:template>
+
+<xsl:template match="ROW">
+    <li>
+        <xsl:value-of select="NAZWA"/>
+    </li>
+</xsl:template>
+
+-- Zad.7
+<xsl:template match="/">
+    <html>
+        <head>
+            <title>Zespoły</title>
+        </head>
+        <body>
+            <h1>ZESPOŁY:</h1>
+            <ol><xsl:apply-templates select="ZESPOLY/ROW"/></ol>
+            <xsl:apply-templates select="ZESPOLY/ROW" mode="details"/>
+        </body>
+    </html>
+</xsl:template>
+
+<xsl:template match="ROW">
+    <li>
+        <xsl:value-of select="NAZWA"/>
+    </li>
+</xsl:template>
+
+<xsl:template match="ROW" mode="details">
+    <li><strong>NAZWA: <xsl:value-of select="NAZWA"/></strong></li>
+    <li><strong>ADRES: <xsl:value-of select="ADRES"/></strong></li>
+    <li></li>
+</xsl:template>
+
+-- Zad.8
+<xsl:template match="/">
+    <html>
+        <head>
+            <title>Zespoły</title>
+        </head>
+        <body>
+            <h1>ZESPOŁY:</h1>
+            <ol><xsl:apply-templates select="ZESPOLY/ROW"/></ol>
+            <xsl:apply-templates select="ZESPOLY/ROW" mode="details"/>
+        </body>
+    </html>
+</xsl:template>
+
+<xsl:template match="ROW">
+    <li>
+        <xsl:value-of select="NAZWA"/>
+    </li>
+</xsl:template>
+
+<xsl:template match="ROW" mode="details">
+    <li><strong>NAZWA: <xsl:value-of select="NAZWA"/></strong></li>
+    <li><strong>ADRES: <xsl:value-of select="ADRES"/></strong></li>
+    <li></li>
+    <li>
+        <table border="1">
+            <tr>
+                <th>Nazwisko</th>
+                <th>Etat</th>
+                <th>Zatrudniony</th>
+                <th>Płaca pod.</th>
+                <th>Id szefa</th>
+            </tr>
+            <xsl:apply-templates select="PRACOWNICY/ROW" mode="worker"/>
+        </table>
+    </li>
+    <li></li>
+</xsl:template>
+
+<xsl:template match="ROW" mode="worker">
+    <tr>
+        <td><xsl:value-of select="NAZWISKO"/></td>
+        <td><xsl:value-of select="ETAT"/></td>
+        <td><xsl:value-of select="ZATRUDNIONY"/></td>
+        <td><xsl:value-of select="PLACA_POD"/></td>
+        <td><xsl:value-of select="ID_SZEFA"/></td>
+    </tr>
+</xsl:template>
+
+-- Zad.9
+<xsl:template match="/">
+    <html>
+        <head>
+            <title>Zespoły</title>
+        </head>
+        <body>
+            <h1>ZESPOŁY:</h1>
+            <ol><xsl:apply-templates select="ZESPOLY/ROW"/></ol>
+            <xsl:apply-templates select="ZESPOLY/ROW" mode="details"/>
+        </body>
+    </html>
+</xsl:template>
+
+<xsl:template match="ROW">
+    <li>
+        <a href="#{position()}"><xsl:value-of select="NAZWA"/></a>
+    </li>
+</xsl:template>
+
+<xsl:template match="ROW" mode="details">
+    <li><a name="{position()}"><strong>NAZWA: <xsl:value-of select="NAZWA"/></strong></a></li>
+    <li><strong>ADRES: <xsl:value-of select="ADRES"/></strong></li>
+    <li></li>
+    <li>
+        <table border="1">
+            <tr>
+                <th>Nazwisko</th>
+                <th>Etat</th>
+                <th>Zatrudniony</th>
+                <th>Płaca pod.</th>
+                <th>Id szefa</th>
+            </tr>
+            <xsl:apply-templates select="PRACOWNICY/ROW" mode="worker"/>
+        </table>
+    </li>
+    <li></li>
+</xsl:template>
+
+<xsl:template match="ROW" mode="worker">
+    <tr>
+        <td><xsl:value-of select="NAZWISKO"/></td>
+        <td><xsl:value-of select="ETAT"/></td>
+        <td><xsl:value-of select="ZATRUDNIONY"/></td>
+        <td><xsl:value-of select="PLACA_POD"/></td>
+        <td><xsl:value-of select="ID_SZEFA"/></td>
+    </tr>
+</xsl:template>
+
+-- Zad.10
+<xsl:apply-templates select="PRACOWNICY/ROW" mode="worker">
+    <xsl:sort select="NAZWISKO"/>
+</xsl:apply-templates>
+
+-- Zad.11
+<td>
+    <xsl:value-of select="//ROW[PRACOWNICY/ROW[ID_PRAC=current()/ID_SZEFA]]/PRACOWNICY/ROW[ID_PRAC=current()/ID_SZEFA]/NAZWISKO"/>
+</td>
+
+-- Zad.12
+<td>
+    <xsl:choose>
+        <xsl:when test="//ROW[PRACOWNICY/ROW[ID_PRAC=current()/ID_SZEFA]]">
+            <xsl:value-of select="//ROW[PRACOWNICY/ROW[ID_PRAC=current()/ID_SZEFA]]/PRACOWNICY/ROW[ID_PRAC=current()/ID_SZEFA]/NAZWISKO"/>
+        </xsl:when>
+        <xsl:otherwise>
+            <xsl:text>brak</xsl:text>
+        </xsl:otherwise>
+    </xsl:choose>
+</td>
+
+-- Zad.13
+Liczba pracowników: <xsl:value-of select="count(PRACOWNICY/ROW)"/>
+
+-- Zad.14
+<xsl:template match="ROW" mode="details">
+    <li><a name="{position()}"><strong>NAZWA: <xsl:value-of select="NAZWA"/></strong></a></li>
+    <li><strong>ADRES: <xsl:value-of select="ADRES"/></strong></li>
+    <li>
+        <li></li>
+        <xsl:if test="count(PRACOWNICY/ROW) > 0">
+        <table border="1">
+            <tr>
+                <th>Nazwisko</th>
+                <th>Etat</th>
+                <th>Zatrudniony</th>
+                <th>Płaca pod.</th>
+                <th>Szef</th>
+            </tr>
+            <xsl:apply-templates select="PRACOWNICY/ROW" mode="worker">
+                <xsl:sort select="NAZWISKO"/>
+            </xsl:apply-templates>
+        </table>
+        </xsl:if>
+    </li>
+    Liczba pracowników: <xsl:value-of select="count(PRACOWNICY/ROW)"/>
+    <li></li>
+</xsl:template>
+
+-- Zad.15
+Zawartość konwerter.xsl:
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+    <xsl:output indent="yes" />
+
+    <xsl:template match="/">
+        <PRACOWNICY>
+            <xsl:apply-templates select="//ROW/PRACOWNICY/ROW">
+                <xsl:sort select="ID_PRAC" data-type="number" order="ascending"/>
+            </xsl:apply-templates>
+        </PRACOWNICY>
+    </xsl:template>
+
+    <xsl:template match="ROW">
+        <PRACOWNIK ID_PRAC="{ID_PRAC}" ID_ZESP="{ID_ZESP}" ID_SZEFA="{ID_SZEFA}">
+            <xsl:copy-of select="NAZWISKO"/>
+            <xsl:copy-of select="ETAT"/>
+            <xsl:copy-of select="ZATRUDNIONY"/>
+            <xsl:copy-of select="PLACA_POD"/>
+            <xsl:copy-of select="PLACA_DOD"/>
+        </PRACOWNIK>
+    </xsl:template>
+</xsl:stylesheet>
+
+
+Zawartość pliku wynikowego:
+<?xml version="1.0" encoding="UTF-8"?>
+<PRACOWNICY>
+    <PRACOWNIK ID_PRAC="100" ID_ZESP="10" ID_SZEFA="">
+        <NAZWISKO>WEGLARZ</NAZWISKO>
+        <ETAT>DYREKTOR</ETAT>
+        <ZATRUDNIONY>01.01.1968</ZATRUDNIONY>
+        <PLACA_POD>1730</PLACA_POD>
+        <PLACA_DOD>420.5</PLACA_DOD>
+    </PRACOWNIK>
+    <PRACOWNIK ID_PRAC="110" ID_ZESP="40" ID_SZEFA="100">
+        <NAZWISKO>BLAZEWICZ</NAZWISKO>
+        <ETAT>PROFESOR</ETAT>
+        <ZATRUDNIONY>01.05.1973</ZATRUDNIONY>
+        <PLACA_POD>1350</PLACA_POD>
+        <PLACA_DOD>210</PLACA_DOD>
+    </PRACOWNIK>
+    <PRACOWNIK ID_PRAC="120" ID_ZESP="30" ID_SZEFA="100">
+        <NAZWISKO>SLOWINSKI</NAZWISKO>
+        <ETAT>PROFESOR</ETAT>
+        <ZATRUDNIONY>01.09.1977</ZATRUDNIONY>
+        <PLACA_POD>1070</PLACA_POD>
+    </PRACOWNIK>
+    <PRACOWNIK ID_PRAC="130" ID_ZESP="20" ID_SZEFA="100">
+        <NAZWISKO>BRZEZINSKI</NAZWISKO>
+        <ETAT>PROFESOR</ETAT>
+        <ZATRUDNIONY>01.07.1968</ZATRUDNIONY>
+        <PLACA_POD>960</PLACA_POD>
+    </PRACOWNIK>
+    <PRACOWNIK ID_PRAC="140" ID_ZESP="20" ID_SZEFA="130">
+        <NAZWISKO>MORZY</NAZWISKO>
+        <ETAT>PROFESOR</ETAT>
+        <ZATRUDNIONY>15.09.1975</ZATRUDNIONY>
+        <PLACA_POD>830</PLACA_POD>
+        <PLACA_DOD>105</PLACA_DOD>
+    </PRACOWNIK>
+    <PRACOWNIK ID_PRAC="150" ID_ZESP="20" ID_SZEFA="130">
+        <NAZWISKO>KROLIKOWSKI</NAZWISKO>
+        <ETAT>ADIUNKT</ETAT>
+        <ZATRUDNIONY>01.09.1977</ZATRUDNIONY>
+        <PLACA_POD>645.5</PLACA_POD>
+    </PRACOWNIK>
+    <PRACOWNIK ID_PRAC="160" ID_ZESP="20" ID_SZEFA="130">
+        <NAZWISKO>KOSZLAJDA</NAZWISKO>
+        <ETAT>ADIUNKT</ETAT>
+        <ZATRUDNIONY>01.03.1985</ZATRUDNIONY>
+        <PLACA_POD>590</PLACA_POD>
+    </PRACOWNIK>
+    <PRACOWNIK ID_PRAC="170" ID_ZESP="20" ID_SZEFA="130">
+        <NAZWISKO>JEZIERSKI</NAZWISKO>
+        <ETAT>ASYSTENT</ETAT>
+        <ZATRUDNIONY>01.10.1992</ZATRUDNIONY>
+        <PLACA_POD>439.7</PLACA_POD>
+        <PLACA_DOD>80.5</PLACA_DOD>
+    </PRACOWNIK>
+    <PRACOWNIK ID_PRAC="180" ID_ZESP="10" ID_SZEFA="100">
+        <NAZWISKO>MAREK</NAZWISKO>
+        <ETAT>SEKRETARKA</ETAT>
+        <ZATRUDNIONY>20.02.1985</ZATRUDNIONY>
+        <PLACA_POD>410.2</PLACA_POD>
+    </PRACOWNIK>
+    <PRACOWNIK ID_PRAC="190" ID_ZESP="20" ID_SZEFA="140">
+        <NAZWISKO>MATYSIAK</NAZWISKO>
+        <ETAT>ASYSTENT</ETAT>
+        <ZATRUDNIONY>01.09.1993</ZATRUDNIONY>
+        <PLACA_POD>371</PLACA_POD>
+    </PRACOWNIK>
+    <PRACOWNIK ID_PRAC="200" ID_ZESP="30" ID_SZEFA="140">
+        <NAZWISKO>ZAKRZEWICZ</NAZWISKO>
+        <ETAT>STAZYSTA</ETAT>
+        <ZATRUDNIONY>15.07.1994</ZATRUDNIONY>
+        <PLACA_POD>208</PLACA_POD>
+    </PRACOWNIK>
+    <PRACOWNIK ID_PRAC="210" ID_ZESP="30" ID_SZEFA="130">
+        <NAZWISKO>BIALY</NAZWISKO>
+        <ETAT>STAZYSTA</ETAT>
+        <ZATRUDNIONY>15.10.1993</ZATRUDNIONY>
+        <PLACA_POD>250</PLACA_POD>
+        <PLACA_DOD>170.6</PLACA_DOD>
+    </PRACOWNIK>
+    <PRACOWNIK ID_PRAC="220" ID_ZESP="20" ID_SZEFA="110">
+        <NAZWISKO>KONOPKA</NAZWISKO>
+        <ETAT>ASYSTENT</ETAT>
+        <ZATRUDNIONY>01.10.1993</ZATRUDNIONY>
+        <PLACA_POD>480</PLACA_POD>
+    </PRACOWNIK>
+    <PRACOWNIK ID_PRAC="230" ID_ZESP="30" ID_SZEFA="120">
+        <NAZWISKO>HAPKE</NAZWISKO>
+        <ETAT>ASYSTENT</ETAT>
+        <ZATRUDNIONY>01.09.1992</ZATRUDNIONY>
+        <PLACA_POD>480</PLACA_POD>
+        <PLACA_DOD>90</PLACA_DOD>
+    </PRACOWNIK>
+</PRACOWNICY>
